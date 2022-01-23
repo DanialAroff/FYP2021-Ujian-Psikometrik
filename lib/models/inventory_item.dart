@@ -18,22 +18,28 @@ class ItemCardIKK extends StatefulWidget {
     Key key,
     this.item,
     this.selectedAnswer,
+    this.answer,
   }) : super(key: key);
   final ItemIKK item;
   final String selectedAnswer;
+  final AnswerCallback answer;
 
   @override
   _ItemCardIKKState createState() => _ItemCardIKKState();
 }
 
-class _ItemCardIKKState extends State<ItemCardIKK> {
+class _ItemCardIKKState extends State<ItemCardIKK> with AutomaticKeepAliveClientMixin {
   String selectedAnswer;
+  AnswerCallback answer;
 
   @override
   void initState() {
     super.initState();
     selectedAnswer = widget.selectedAnswer;
+    answer = widget.answer;
   }
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +61,11 @@ class _ItemCardIKKState extends State<ItemCardIKK> {
           Row(
             children: [
               Radio(
-                value: 'setuju',
+                value: 'Setuju',
                 groupValue: selectedAnswer,
                 onChanged: (String value) {
                   setState(() => selectedAnswer = value);
+                  answer(value);
                 },
                 activeColor: AppColors.primary,
                 splashRadius: 12,
@@ -77,10 +84,11 @@ class _ItemCardIKKState extends State<ItemCardIKK> {
           Row(
             children: [
               Radio(
-                value: 'tidak setuju',
+                value: 'Tidak setuju',
                 groupValue: selectedAnswer,
                 onChanged: (String value) {
                   setState(() => selectedAnswer = value);
+                  answer(value);
                 },
                 activeColor: AppColors.primary,
                 splashRadius: 12,
@@ -101,3 +109,5 @@ class _ItemCardIKKState extends State<ItemCardIKK> {
     );
   }
 }
+
+typedef AnswerCallback = void Function(String value);

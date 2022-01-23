@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fyp1/models/user.dart';
 import 'package:fyp1/services/database.dart';
 import 'package:fyp1/shared/appcolors.dart';
-// import 'package:fyp1/services/auth.dart';
 import 'package:fyp1/shared/loading.dart';
 import 'package:fyp1/shared/drawer.dart';
 import 'package:fyp1/shared/scorecards.dart';
@@ -113,6 +112,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                             color: AppColors.text2),
                       ),
                     ),
+
                     // Test Scores
                     StreamBuilder<DocumentSnapshot>(
                         stream: DatabaseService(uid: widget.user.uid)
@@ -185,69 +185,4 @@ class _StudentHomePageState extends State<StudentHomePage> {
       ),
     );
   }
-
-  // Widget testCard(BuildContext context, String uid, MyUser user) {
-  //   String fullName = user.fullName;
-  //   return SizedBox(
-  //     width: MediaQuery.of(context).size.width,
-  //     height: 150,
-  //     child: Card(
-  //       elevation: 0,
-  //       child: Container(
-  //         padding: const EdgeInsets.all(15),
-  //         decoration: const BoxDecoration(
-  //             borderRadius: BorderRadius.all(Radius.circular(5)),
-  //             gradient: LinearGradient(colors: [
-  //               AppColors.primary,
-  //               AppColors.primary,
-  //             ], begin: Alignment.topCenter)),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: <Widget>[
-  //             Text(
-  //               testName,
-  //               style: const TextStyle(
-  //                   fontFamily: mainFont,
-  //                   fontSize: 20,
-  //                   fontWeight: FontWeight.bold,
-  //                   color: Colors.white),
-  //               textAlign: TextAlign.start,
-  //             ),
-  //             const Spacer(),
-  //             OutlinedButton(
-  //               onPressed: () {
-  //                 if (page == 'IKK') {
-  //                   Navigator.push(
-  //                       context,
-  //                       MaterialPageRoute(
-  //                           builder: (context) => const PsychometricTestIKK()));
-  //                 } else if (page == 'ITP') {
-  //                   Navigator.push(
-  //                       context,
-  //                       MaterialPageRoute(
-  //                           builder: (context) => const PsychometricTestIKK()));
-  //                 }
-  //               },
-  //               child: const Text(
-  //                 'Jawab Ujian',
-  //                 style: TextStyle(
-  //                     // color: AppColors.primary,
-  //                     color: Colors.white,
-  //                     fontFamily: mainFont,
-  //                     fontSize: 15,
-  //                     fontWeight: FontWeight.bold),
-  //               ),
-  //               style: OutlinedButton.styleFrom(
-  //                   primary: AppColors.gray,
-  //                   minimumSize: const Size(130, 40),
-  //                   // backgroundColor: Colors.white,
-  //                   side: const BorderSide(color: Colors.white, width: 0.8),
-  //                   splashFactory: InkRipple.splashFactory),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

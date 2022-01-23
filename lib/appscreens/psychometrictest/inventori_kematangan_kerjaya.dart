@@ -17,9 +17,11 @@ class PsychometricTestIKK extends StatefulWidget {
 class _PsychometricTestIKKState extends State<PsychometricTestIKK> {
   List<ItemIKK> _itemsDS; // domain sikap
   List<ItemIKK> _itemsDK; // domain kecekapan
-  List<String> _dsSelectedAnswer = [];
-  List<String> _dkSelectedAnswer;
   final String _initialValue = 'Not selected';
+
+  // 14/01/2022
+  List<String> _gpValuesDK;
+  List<String> _gpValuesDS;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +58,8 @@ class _PsychometricTestIKKState extends State<PsychometricTestIKK> {
               List<DocumentSnapshot> documents = snapshot.data.docs;
               _itemsDS = [];
               _itemsDK = [];
-              _dsSelectedAnswer = [];
-              _dkSelectedAnswer = [];
-
+              // fill list with all of the items/questions from firebase
+              // according to the domain (Domain Sikap/Domain Kecekapan)
               for (DocumentSnapshot document in documents) {
                 if (document.get('domain') == 'sikap') {
                   _itemsDS.add(ItemIKK.fromMap(document.data()));
@@ -66,8 +67,9 @@ class _PsychometricTestIKKState extends State<PsychometricTestIKK> {
                   _itemsDK.add(ItemIKK.fromMap(document.data()));
                 }
               }
-              // _fillList(_dsSelectedAnswer, _itemsDS.length);
-              // _fillList(_dkSelectedAnswer, _itemsDK.length);
+              _gpValuesDS = List.filled(_itemsDS.length, _initialValue);
+              _gpValuesDK = List.filled(_itemsDK.length, _initialValue);
+
               return ListView(
                 padding: const EdgeInsets.all(10.0),
                 physics: const BouncingScrollPhysics(),
@@ -89,27 +91,61 @@ class _PsychometricTestIKKState extends State<PsychometricTestIKK> {
                           fontSize: 16),
                     ),
                   ),
-                  listBuilder(_itemsDK, _dsSelectedAnswer),
+                  listBuilder("DS"),
                   const SizedBox(height: 12.0),
-                  listBuilder(_itemsDK, _dsSelectedAnswer),
-                  listBuilder(_itemsDS, _dsSelectedAnswer),
-                  // Container(
-                  //   padding: const EdgeInsets.all(10.0),
-                  //   decoration: const BoxDecoration(
-                  //     border: Border(
-                  //       bottom:
-                  //           BorderSide(width: 2.0, color: AppColors.secondary),
-                  //     ),
-                  //   ),
-                  //   child: const Text(
-                  //     'Domain Kecekapan',
-                  //     style: TextStyle(
-                  //         color: AppColors.text2,
-                  //         fontWeight: FontWeight.bold,
-                  //         fontSize: 16),
-                  //   ),
-                  // ),
-                  // listBuilder(_itemsDK, _dkSelectedAnswer),
+                  Container(
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom:
+                            BorderSide(width: 2.0, color: AppColors.secondary),
+                      ),
+                    ),
+                    child: const Text(
+                      'Domain Kecekapan',
+                      style: TextStyle(
+                          color: AppColors.text2,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                  ),
+                  listBuilder("DK"),
+                  TextButton(
+                      onPressed: () {
+                        // for (int i = 0; i < _gpValuesDS.length; i++) {
+                        //   debugPrint('DS : ${_gpValuesDS[i]}');
+                        // }
+                        // for (int i = 0; i < _gpValuesDK.length; i++) {
+                        //   debugPrint('DK : ${_gpValuesDK[i]}');
+                        // }
+                        bool isAllAnswered = true;
+                        if (_gpValuesDS.contains(_initialValue) ||
+                            _gpValuesDK.contains(_initialValue)) {
+                          isAllAnswered = false;
+                        }
+
+                        if (!isAllAnswered) {
+                          debugPrint(
+                              'There are still questions left unanswered.');
+                        } else {
+                          debugPrint('All questions has been answered.');
+                          int correctAnsDS = 0;
+                          int correctAnsDK = 0;
+                          for (int i = 0; i < _itemsDS.length; i++) {
+                            if (_gpValuesDS[i].toLowerCase() == _itemsDS[i].answer) {
+                              correctAnsDS++;
+                            }
+                          }
+                          for (int i = 0; i < _itemsDK.length; i++) {
+                            if (_gpValuesDK[i].toLowerCase() == _itemsDK[i].answer) {
+                              correctAnsDK++;
+                            }
+                          }
+                          debugPrint('Domain Sikap : $correctAnsDS/${_itemsDS.length}');
+                          debugPrint('Domain Kecekapan : $correctAnsDK/${_itemsDK.length}');
+                        }
+                      },
+                      child: const Text('Answers')),
                 ],
               );
             }
@@ -120,14 +156,39 @@ class _PsychometricTestIKKState extends State<PsychometricTestIKK> {
 
   // to build list of question card. Divided to 2 sections.
   // First is the question number and the second is radio buttons.
-  Widget listBuilder(List<ItemIKK> items, List<String> selectedAnswers) {
+  Widget listBuilder(String domain) {
     List<Widget> itemCard = [];
+    List items;
+    if (domain == 'DS') {
+      items = _itemsDS;
+    } else {
+      items = _itemsDK;
+    }
+    // initializing the cards content
     for (int x = 0; x < items.length; x++) {
-      itemCard.insert(
-          x,
-          ItemCardIKK(
-            item: items.elementAt(x),
-          ));
+      if (domain == 'DS') {
+        itemCard.insert(
+            x,
+            ItemCardIKK(
+              item: items.elementAt(x),
+              //  to store the selected answer
+              selectedAnswer: _gpValuesDS[x],
+              answer: (String value) {
+                _gpValuesDS[x] = value;
+              },
+            ));
+      } else {
+        itemCard.insert(
+            x,
+            ItemCardIKK(
+              item: items.elementAt(x),
+              //  to store the selected answer
+              selectedAnswer: _gpValuesDK[x],
+              answer: (String value) {
+                _gpValuesDK[x] = value;
+              },
+            ));
+      }
     }
     return ListView.builder(
       shrinkWrap: true,
@@ -172,10 +233,4 @@ class _PsychometricTestIKKState extends State<PsychometricTestIKK> {
       physics: const BouncingScrollPhysics(),
     );
   }
-
-  // void _fillList(List<String> selectedAnswers, int length) {
-  //   for (int x = 0; x < length; x++) {
-  //     selectedAnswers.add(_initialValue);
-  //   }
-  // }
 }
