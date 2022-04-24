@@ -1,4 +1,8 @@
-# fyp1
+# FYP - Psychometric Test Application
+
+A psychometric test app for primary school use. 
+
+
 
 A new Flutter project.
 
