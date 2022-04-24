@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'appcolors.dart';
 
+// to capitalize first letter of each domain/traits
 extension CapExtenstion on String {
   String get inCaps => '${this[0].toUpperCase()}${substring(1)}';
   String get capitalizeFirstofEach =>
@@ -9,9 +10,12 @@ extension CapExtenstion on String {
 }
 
 class ScoreCard extends StatelessWidget {
-  final DocumentSnapshot score;
+  final DocumentSnapshot scores;
   final String title;
-  const ScoreCard({Key key, this.score, this.title='Inventori'}) : super(key: key);
+  final bool sort;
+  const ScoreCard(
+      {Key key, this.scores, this.title = 'Inventori', this.sort = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +37,11 @@ class ScoreCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-              getRows(),
+              domainRows(),
             ],
           ),
         ),
@@ -44,15 +49,18 @@ class ScoreCard extends StatelessWidget {
     );
   }
 
-  Widget getRows() {
-    Map<String, dynamic> data = score.data();
+  Widget domainRows() {
+    Map<String, dynamic> data = scores.data();
     List domains = data.keys.toList();
+    if (sort) {
+      domains.sort();
+    }
 
     List<Widget> list = [];
     for (var element in domains) {
       String domainName = element.replaceAll('_', ' ');
       domainName = domainName.capitalizeFirstofEach;
-      list.add(domainRow(domainName, score.get(element)));
+      list.add(domainPercentageBar(domainName, scores.get(element)));
       list.add(const SizedBox(height: 8));
     }
 
@@ -61,7 +69,7 @@ class ScoreCard extends StatelessWidget {
     );
   }
 
-  Widget domainRow(String domain, double score) {
+  Widget domainPercentageBar(String domain, double score) {
     return Column(
       children: [
         Row(

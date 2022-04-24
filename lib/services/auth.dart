@@ -46,7 +46,7 @@ class AuthService {
           email: email, password: password);
       await _populateCurrentUser(result.user);
       User user = result.user;
-      // return _user(user);
+
       return _user(user);
     } catch (e) {
       print(e.toString());

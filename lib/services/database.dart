@@ -60,16 +60,21 @@ class DatabaseService {
     }
   }
 
+  // Fetch all item of Inventori Kematangan Kerjaya as a QuerySnapshot
   Future<QuerySnapshot> get itemsIKK async {
     CollectionReference collection =
         FirebaseFirestore.instance.collection('inventori_kematangan_kerjaya');
     return await collection.get();
   }
-//  Stream<QuerySnapshot> get itemsIKKs {
-//     CollectionReference collection =
-//         FirebaseFirestore.instance.collection('inventori_kematangan_kerjaya');
-//     return collection.snapshots();
-//   }
+  // Update score for Inventori Kematangan Kerjaya
+  // taking the percentage score for Domain Sikap & Domain Kecekapan
+  // as the parameters
+  Future updateIKKScore(num dsPercentageScore, num dkPercentageScore) {
+    return scoreIKK.doc(uid).set({
+      'domain_kecekapan': dkPercentageScore,
+      'domain_sikap': dsPercentageScore,
+    });
+  }
 
   Future<MyUser> get getUser async {
     try {
@@ -79,12 +84,5 @@ class DatabaseService {
       debugPrint(e.toString());
       return null;
     }
-  }
-
-  Stream<MyUser> get userData {
-    return userCollection
-        .doc(uid)
-        .snapshots()
-        .map((snapshot) => MyUser.fromMap(snapshot.data()));
   }
 }

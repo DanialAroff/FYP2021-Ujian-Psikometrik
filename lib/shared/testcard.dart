@@ -27,9 +27,16 @@ class TestCard extends StatelessWidget {
         elevation: 0,
         child: Container(
           padding: const EdgeInsets.all(15),
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              gradient: LinearGradient(colors: [
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.5),
+                  blurRadius: 5,
+                  spreadRadius: 1.2,
+                )
+              ],
+              gradient: const LinearGradient(colors: [
                 AppColors.primary,
                 AppColors.primary,
               ], begin: Alignment.topCenter)),
@@ -76,7 +83,6 @@ class TestCard extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                     primary: AppColors.gray,
                     minimumSize: const Size(130, 40),
-                    // backgroundColor: Colors.white,
                     side: const BorderSide(color: Colors.white, width: 0.8),
                     splashFactory: InkRipple.splashFactory),
               ),

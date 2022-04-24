@@ -8,4 +8,5 @@ class AppColors {
   static const Color gray = Color(0xff7f8c8d);
   static const Color text1 = Color(0xff21130d);
   static const Color text2 = Color(0xff303030);
+  static const Color dialogText = Color(0xff787878);
 }

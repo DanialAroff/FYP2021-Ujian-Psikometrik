@@ -123,7 +123,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                               ConnectionState.active) {
                             if (snapshot.data.exists) {
                               return ScoreCard(
-                                  score: snapshot.data,
+                                  scores: snapshot.data,
                                   title: 'Inventori Kematangan Kerjaya');
                             } else {
                               return SizedBox.shrink();
@@ -134,45 +134,47 @@ class _StudentHomePageState extends State<StudentHomePage> {
                           }
                         }),
                     SizedBox(height: 12),
-                    StreamBuilder<DocumentSnapshot>(
-                        stream: DatabaseService(uid: widget.user.uid)
-                            .currentUserITPScore,
-                        builder: (BuildContext buildContext,
-                            AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.active) {
-                            if (snapshot.data.exists) {
-                              return ScoreCard(
-                                  score: snapshot.data,
-                                  title: 'Inventori Trait Personaliti');
-                            } else {
-                              return SizedBox.shrink();
-                            }
-                          } else {
-                            // need to add a spinkit
-                            return ScoreLoading();
-                          }
-                        }),
+                    // StreamBuilder<DocumentSnapshot>(
+                    //     stream: DatabaseService(uid: widget.user.uid)
+                    //         .currentUserITPScore,
+                    //     builder: (BuildContext buildContext,
+                    //         AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    //       if (snapshot.connectionState ==
+                    //           ConnectionState.active) {
+                    //         if (snapshot.data.exists) {
+                    //           return ScoreCard(
+                    //               scores: snapshot.data,
+                    //               title: 'Inventori Trait Personaliti',
+                    //               sort: true // sort the domains alphabetically
+                    //           );
+                    //         } else {
+                    //           return SizedBox.shrink();
+                    //         }
+                    //       } else {
+                    //         // need to add a spinkit
+                    //         return ScoreLoading();
+                    //       }
+                    //     }),
                     SizedBox(height: 12),
-                    StreamBuilder<DocumentSnapshot>(
-                        stream: DatabaseService(uid: widget.user.uid)
-                            .currentUserIMKScore,
-                        builder: (BuildContext buildContext,
-                            AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.active) {
-                            if (snapshot.data.exists) {
-                              return ScoreCard(
-                                  score: snapshot.data,
-                                  title: 'Inventori Minat Kerjaya');
-                            } else {
-                              return SizedBox.shrink();
-                            }
-                          } else {
-                            // need to add a spinkit
-                            return ScoreLoading();
-                          }
-                        }),
+                    // StreamBuilder<DocumentSnapshot>(
+                    //     stream: DatabaseService(uid: widget.user.uid)
+                    //         .currentUserIMKScore,
+                    //     builder: (BuildContext buildContext,
+                    //         AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    //       if (snapshot.connectionState ==
+                    //           ConnectionState.active) {
+                    //         if (snapshot.data.exists) {
+                    //           return ScoreCard(
+                    //               score: snapshot.data,
+                    //               title: 'Inventori Minat Kerjaya');
+                    //         } else {
+                    //           return SizedBox.shrink();
+                    //         }
+                    //       } else {
+                    //         // need to add a spinkit
+                    //         return ScoreLoading();
+                    //       }
+                    //     }),
                   ],
                 ),
                 SizedBox(

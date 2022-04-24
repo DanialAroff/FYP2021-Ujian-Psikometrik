@@ -1,79 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fyp1/services/auth.dart';
 import 'package:fyp1/shared/appcolors.dart';
-
-class LogoutDialog {
-  createLogoutDialog(BuildContext context) {
-    AuthService _auth = AuthService();
-    return showDialog(
-        context: context,
-        barrierColor: Colors.black54,
-        barrierDismissible: true,
-        builder: (context) {
-          return Dialog(
-            insetAnimationDuration: const Duration(milliseconds: 700),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        top: 10.0,
-                        bottom: 10.0,
-                      ),
-                      child: Text(
-                        'Log Keluar?',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    OutlinedButton(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        await _auth.logOut();
-                      },
-                      child: const Text('Log Keluar',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      style: OutlinedButton.styleFrom(
-                        primary: Colors.white,
-                        backgroundColor: AppColors.primary,
-                        fixedSize: const Size(200.0, 40.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        side: const BorderSide(
-                          color: AppColors.primary,
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
-                    OutlinedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Batal',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      style: OutlinedButton.styleFrom(
-                        primary: AppColors.text2,
-                        fixedSize: const Size(200.0, 40.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        side: const BorderSide(
-                          color: AppColors.gray,
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
-                  ]),
-            ),
-          );
-        });
-  }
-}
+import 'package:fyp1/shared/dialogs.dart';
 
 class AppDrawer extends StatelessWidget {
   final String fullName;
@@ -141,7 +68,7 @@ class AppDrawer extends StatelessWidget {
               ),
               leading: const Icon(Icons.logout, color: Color(0xff303030)),
               onTap: () {
-                LogoutDialog().createLogoutDialog(context);
+                Dialogs().logOutConfirmation(context);
               },
             ),
           ),

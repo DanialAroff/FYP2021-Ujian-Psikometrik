@@ -4,6 +4,7 @@ import 'package:fyp1/appscreens/home/home_student.dart';
 import 'package:fyp1/models/user.dart';
 import 'package:fyp1/services/database.dart';
 import 'package:fyp1/shared/loading.dart';
+import 'package:fyp1/shared/globals.dart' as globals;
 
 class Direct extends StatelessWidget {
   final String uid;
@@ -20,12 +21,13 @@ class Direct extends StatelessWidget {
           if (snapshot.hasError) {
             return null;
           } else {
-            debugPrint('USER ROLE: ' + snapshot.data.userRole);
+            debugPrint('User Role : ' + snapshot.data.userRole);
             MyUser userModel = MyUser(
                 uid: uid,
                 email: snapshot.data.email,
                 fullName: snapshot.data.fullName,
                 userRole: snapshot.data.userRole);
+            globals.userModel = userModel;
             if (snapshot.data.userRole == 'admin') {
               return const AdminHomePage();
             } else {

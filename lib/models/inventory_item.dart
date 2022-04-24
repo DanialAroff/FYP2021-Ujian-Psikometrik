@@ -5,12 +5,14 @@ import 'package:fyp1/shared/appcolors.dart';
 class ItemIKK {
   final String question;
   final String answer;
+  final String domain;
 
-  ItemIKK(this.question, this.answer);
+  ItemIKK(this.question, this.answer, this.domain);
 
   ItemIKK.fromMap(Map data)
       : question = data['question'],
-        answer = data['answer'];
+        answer = data['answer'],
+        domain = data['domain'];
 }
 
 class ItemCardIKK extends StatefulWidget {
@@ -28,7 +30,8 @@ class ItemCardIKK extends StatefulWidget {
   _ItemCardIKKState createState() => _ItemCardIKKState();
 }
 
-class _ItemCardIKKState extends State<ItemCardIKK> with AutomaticKeepAliveClientMixin {
+class _ItemCardIKKState extends State<ItemCardIKK>
+    with AutomaticKeepAliveClientMixin {
   String selectedAnswer;
   AnswerCallback answer;
 
@@ -38,11 +41,13 @@ class _ItemCardIKKState extends State<ItemCardIKK> with AutomaticKeepAliveClient
     selectedAnswer = widget.selectedAnswer;
     answer = widget.answer;
   }
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
